@@ -3,6 +3,7 @@
 ByteConverter is a command-line tool written in C++. It takes an input number, either in decimal or hexadecimal format, and prints the hexadecimal, decimal, and binary representation of the input number. The binary representation is divided by nibbles (4 bits) for easier reading. It uses ANSI escape codes for color output on terminals that support it.
 
 ## Building ByteConverter
+![Build](https://github.com/JohnArild/ByteConverter/actions/workflows/cmake.yml/badge.svg)
 
 This project uses CMake for its build system. Here's how you can build ByteConverter:
 
