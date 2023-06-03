@@ -1,12 +1,6 @@
-#include <iostream>
-#include <sstream>
-#include <bitset>
-#include <vector>
-#include <algorithm>
-#include <iomanip>
-#include <cstdint>
+#include "ByteConverter.h"
 
-std::vector<uint8_t> hexToBytes(const std::string& hex) {
+std::vector<uint8_t> ByteConverter::hexToBytes(const std::string& hex) {
     std::vector<uint8_t> bytes;
 
     for (unsigned int i = 0; i < hex.length(); i += 2) {
@@ -18,7 +12,7 @@ std::vector<uint8_t> hexToBytes(const std::string& hex) {
     return bytes;
 }
 
-std::vector<uint8_t> decimalToBytes(uint64_t decimal) {
+std::vector<uint8_t> ByteConverter::decimalToBytes(uint64_t decimal) {
     std::vector<uint8_t> bytes;
 
     do {
@@ -32,7 +26,7 @@ std::vector<uint8_t> decimalToBytes(uint64_t decimal) {
     return bytes;
 }
 
-void printHex(const std::vector<uint8_t>& bytes) {
+void ByteConverter::printHex(const std::vector<uint8_t>& bytes) {
     std::cout << "0x";
     for (auto byte : bytes) {
         std::cout << std::setfill('0') << std::setw(2) << std::hex << (int)byte;
@@ -40,7 +34,7 @@ void printHex(const std::vector<uint8_t>& bytes) {
     std::cout << std::dec << '\n';
 }
 
-void printDecimal(const std::vector<uint8_t>& bytes) {
+void ByteConverter::printDecimal(const std::vector<uint8_t>& bytes) {
     uint64_t value = 0;
     for (auto byte : bytes) {
         value = (value << 8) | byte;
@@ -48,7 +42,7 @@ void printDecimal(const std::vector<uint8_t>& bytes) {
     std::cout << value << '\n';
 }
 
-void printSpacedHex(const std::vector<uint8_t>& bytes) {
+void ByteConverter::printSpacedHex(const std::vector<uint8_t>& bytes) {
     int color = 0;
     for (auto byte : bytes) {
         if (color % 2 == 0) {
@@ -64,7 +58,7 @@ void printSpacedHex(const std::vector<uint8_t>& bytes) {
     std::cout << "\033[0m" << std::dec << '\n'; // Reset the terminal color to defaults
 }
 
-void printBits(const std::vector<uint8_t>& bytes) {
+void ByteConverter::printBits(const std::vector<uint8_t>& bytes) {
     int color = 0;
     for (auto byte : bytes) {
         std::bitset<8> byteBits(byte);
@@ -83,29 +77,3 @@ void printBits(const std::vector<uint8_t>& bytes) {
     }
     std::cout << "\033[0m" << '\n'; // Reset the terminal color to defaults
 }
-int main(int argc, char* argv[]) {
-    if (argc < 2) {
-        std::cout << "Please provide a hex or decimal value.\n";
-        return 1;
-    }
-
-    std::string input(argv[1]);
-    std::vector<uint8_t> bytes;
-
-    if (input.length() > 2 && input.substr(0, 2) == "0x") {
-        // Input is a hexadecimal number.
-        bytes = hexToBytes(input.substr(2));
-    } else {
-        // Input is a decimal number.
-        uint64_t decimal = strtoull(input.c_str(), nullptr, 10);
-        bytes = decimalToBytes(decimal);
-    }
-
-    printDecimal(bytes);
-    printHex(bytes);
-    printSpacedHex(bytes);
-    printBits(bytes);
-
-    return 0;
-}
-
